@@ -1,3 +1,14 @@
-select lpad(cast(carrier_code as text),7,'0'),
-region_name
-from medicare_allowed_amt.carrier_regions
+
+
+select 
+CONCAT(cpt.carrier_num, cpt.locality) AS carrier_code,
+cpt.hcpcs_code,
+reg.state_acronym,
+reg.region_name,
+cpt.non_fac_fee_schedule_amt
+
+
+from medicare_allowed_amt.cpt_allowed_amt cpt
+
+left join medicare_allowed_amt.carrier_regions reg
+on CONCAT(cpt.carrier_num, cpt.locality) = lpad(cast(reg.carrier_code as text),7,'0')
