@@ -191,9 +191,9 @@ mp_opps_amt decimal(10,2)
 ------------------------------------------------------------
 
 ## Carrier_region table
-CREATE TABLE IF NOT EXISTS "CMS"."medicare_allowed_amt".carrier_regions (
+CREATE TABLE IF NOT EXISTS "CMS"."medicare_allowed_amt".carrier_regions(
     carrier_code    VARCHAR(20) ,
-    state_acronym   CHAR(2)     ,
+    state_acronym   VARCHAR(3)     ,
     region_name     VARCHAR(50) 
 );
 
