@@ -16,4 +16,3 @@ from medicare_allowed_amt.cpt_allowed_amt cpt
 left join medicare_allowed_amt.carrier_regions reg
 on CONCAT(cpt.carrier_num, cpt.locality) = lpad(cast(reg.carrier_code as text),7,'0')
 
-----------------------
