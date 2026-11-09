@@ -13,7 +13,6 @@ The project follows a typical analytics workflow:
 - Interactive Dashboard Development in Tableau
 - Insight Generation
 
----
 
 ## Business Problem
 
@@ -35,43 +34,107 @@ The goal was to answer:
 
 
 
-----
 
 ## 📊 Data Preparation
-## SQL Data Exploration
+- Performed SQL-based data exploration and validation.
+- Consolidated multiple CMS fee schedule releases into a single master table using a staging-table workflow.
+- Identified that CMS files labeled by quarter were revision releases rather than replacement snapshots. Added a source_ver field (AR/B/C/D) to track data origin and preserve historical fee schedule updates.
+- Grouped thousands of HCPCS codes into broader clinical categories to improve visualization readability and support category-level pricing analysis.
+- Created state-level groupings while preserving regional granularity for geographic reimbursement comparisons.
+
+### 1. CMS Release Consolidation
+
+Initially, I assumed CMS fee schedule files were quarterly replacements. Further validation revealed that each release contained supplemental updates rather than completely replacing prior files. A staging-table workflow was developed to consolidate multiple CMS releases into a single master dataset, and a source_ver field was added to track data origin and revision history.
 
 
-This project uses the **CMS Physician Fee Schedule (PFS) non‑QP files** as the foundation for calculating Florida Personal Injury Protection (PIP) insurance payments.
 
-- Non‑QP files are chosen because Florida Statute 627.736 requires insurers to base payments on **Medicare Part B non‑QP allowed amounts × 200% × 80%**.
+### 2. HCPCS Categorization
 
+One challenge encountered during analysis was the large number of HCPCS procedure codes.
 
-- Initially assumed the business key was:
+Visualizing thousands of individual codes produced cluttered and difficult-to-interpret charts.
 
- `   Locality + HCPCS Code + Modifier`
+To improve interpretability, HCPCS codes were grouped into broader medical categories, including:
 
-- Duplicate checks identified a large number of apparent duplicate records.
+- Medicine
+- Digestive
+- Neuro / ENT
+- Respiratory
+- Musculoskeletal (MSK)
+- Radiology
+- Laboratory / Pathology
+- GU / OB-GYN
+- Integumentary
+- Other
 
-- Added a quarter field (Q1, Q2, Q3, Q4) to distinguish CMS file releases, assuming later files contained additional payment records.
+This transformation allowed analysis at a clinically meaningful level rather than focusing solely on individual procedure codes.
 
-- Further investigation revealed that the apparent duplicates were caused by different Carrier Numbers (MAC jurisdictions) rather than quarterly updates.
+### 3. Geographic Standardization
 
-- Identical HCPCS codes could have different allowed amounts across carriers:
-`   HCPCS: Q4322`  <br>
-`   Locality: 01 ` <br>
-`   Carrier 01212 → $144.69 `  <br>
-`   Carrier 02102 → $135.53 `  <br> 
-`   Carrier 02302 → $141.38 `  <br>
+State and locality data were standardized to support geographic analysis while preserving region-level reimbursement differences where applicable.
 
-- Quarterly CMS releases represent revision updates rather than supplemental datasets.
+-----
 
-- Duplicate validation using the revised business key returned zero duplicate records:
+## Key Insights
 
-- Final pricing engine design uses:
-- 
-``Primary Key:`` <br>
-   ``Year + Carrier Number + Locality + HCPCS Code + Modifier
-``
+### Facility and Non-Facility Reimbursement Differences Are Not Uniform
 
-- Later CMS releases (AR/B/C/D) are loaded as version updates that overwrite prior payment amounts.
+Pricing gaps vary significantly across HCPCS categories.
+
+For example:
+
+- Integumentary procedures show some of the largest reimbursement differences.
+- Laboratory and Pathology categories exhibit minimal differences.
+
+This suggests reimbursement methodologies differ by medical specialty.
+
+----
+
+### Many HCPCS Codes Share Identical Fee Schedules
+
+Several categories exhibit high percentages of "No Gap" codes where Facility and Non-Facility reimbursement amounts are identical.
+
+This indicates standardized reimbursement practices within those specialties.
+
+----
+
+### Geographic Variation Matters
+
+State-level analysis reveals that reimbursement structures differ across regions.
+
+The dashboard supports geographic drill-down to identify localized pricing patterns.
+
+---
+## Technical Skills Demonstrated
+
+### SQL
+- Data Exploration
+- Aggregation
+- Data Validation
+- Business Rule Investigation
+
+### Tableau
+- Interactive Dashboard Design
+- Calculated Fields
+- Parameter and Filter Actions
+- Geographic Mapping
+- Data Visualization
+- KPI Reporting
+
+### Analytical Skills
+- Healthcare Reimbursement Analysis
+- Pricing Gap Identification
+- Feature Engineering
+- Category-Based Segmentation
+- Business Insight Communication
+
+----
+## Lessons Learned
+
+One of the most important lessons from this project was that effective analytics often requires transforming highly granular data into business-friendly dimensions.
+
+Rather than comparing thousands of individual HCPCS codes directly, grouping procedures into broader clinical categories made pricing patterns easier to identify and communicate.
+
+The project also reinforced the importance of selecting visualizations based on the business question being answered. Different chart types were used intentionally to compare reimbursement amounts, highlight pricing gaps, and support geographic analysis.
+
  
