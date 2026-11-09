@@ -1,31 +1,44 @@
-# PIP Medical Fee Schedule Dashboard 
+# PIP Medical Fee Schedule Analysis Dashboard
 
-The **PIP Pricing Engine** is a data-driven application designed to calculate and validate medical billing under Florida’s Personal Injury Protection (PIP) insurance rules. Using CMS’s **Physician Fee Schedule (PFS) non‑QP data** , the tool generates Medicare allowed amounts by CPT code, adjusts them to the statutory 200% multiplier, and applies the 80% reimbursement rule mandated by Florida Statute 627.736.
+## Project Overview
+This project analyzes Personal Injury Protection (PIP) Medical Fee Schedule data across U.S. states using SQL and Tableau.
 
-The project integrates three core datasets:
+The objective was to explore reimbursement differences between Facility and Non-Facility fee schedules, identify pricing variations across medical procedure categories (HCPCS), and build an interactive dashboard that allows users to drill down from state-level summaries to individual HCPCS codes.
 
-- **CPT Allowed Amount table** for national payment amounts
+The project follows a typical analytics workflow:
 
-- **Locality table** for geographic adjustments
-
-- **Conversion Factor table** for RVU-based calculations
-
-With SQL queries and Tableau dashboards, the tool enables:
-
-- Automated PIP payment calculation by CPT and locality
-
-- Facility vs Non‑Facility cost comparison
-
-- Regional pricing analysis (e.g., Miami vs. Rest of Florida)
-
-- Trend visualization of conversion factors and allowed amounts over time
-
-This project demonstrates practical expertise in SQL data modeling, healthcare payment systems, and insurance analytics, while providing a real-world application for billing validation and claims management.
+- Data Exploration in SQL
+- Data Transformation and Feature Engineering
+- Business Rule Validation
+- Interactive Dashboard Development in Tableau
+- Insight Generation
 
 ---
 
+## Business Problem
 
-## 📊 Data Modeling Notes
+Medical reimbursement schedules contain thousands of HCPCS procedure codes.
+
+A direct comparison at the individual code level quickly becomes difficult because:
+
+- There are too many HCPCS codes to visualize effectively
+- Individual procedures may not reveal broader pricing patterns
+- Regional reimbursement structures differ across states
+- Facility and Non-Facility fee schedules may follow different pricing strategies
+
+The goal was to answer:
+
+1. Which HCPCS categories have the largest reimbursement differences?
+2. How much variation exists between Facility and Non-Facility reimbursement amounts?
+3. Which states show the highest pricing gaps?
+4. Are reimbursement differences concentrated within specific medical specialties?
+
+
+
+----
+
+## 📊 Data Preparation
+## SQL Data Exploration
 
 
 This project uses the **CMS Physician Fee Schedule (PFS) non‑QP files** as the foundation for calculating Florida Personal Injury Protection (PIP) insurance payments.
